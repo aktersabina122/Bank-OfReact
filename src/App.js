@@ -1,18 +1,16 @@
-
-// src/App.js
-
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
-import Home from './components/Home';
-import UserProfile from './components/UserProfile';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import Home from './components/home';
+import UserProfile from './components/user-profile';
+import LogIn from './components/login'
+import './App.css';
 
 class App extends Component {
-
   constructor() {
     super();
 
     this.state = {
-      accountBalance: 14568.27,
+      accountBalance: 12568.27,
       currentUser: {
         userName: 'bob_loblaw',
         memberSince: '08/23/99',
@@ -20,73 +18,31 @@ class App extends Component {
     }
   }
 
-  render() {
-
-    const HomeComponent = () => (<Home accountBalance={this.state.accountBalance}/>);
-    const UserProfileComponent = () => (
-        <UserProfile userName={this.state.currentUser.userName} memberSince={this.state.currentUser.memberSince}  />
-    );
-
-    return (
-        <Router>
-          <div>
-            <Route exact path="/" render={HomeComponent}/>
-            <Route exact path="/userProfile" render={UserProfileComponent}/>
-          </div>
-        </Router>
-    );
+  mocLogIn = (logInInfo) => {
+    const newUser = {...this.state.currentUser};
+    newUser.userName = logInInfo.userName;
+    this.setState({currentUser: newUser});
   }
+  render() {
+      const HomeComponent = () => (<Home accountBalance={this.state.accountBalance}/>);
+      const LogInComponent = () => (<LogIn
+                                        user={this.state.currentUser}
+                                        mockLogIn={this.mockLogIn}
+                                        {...this.props} />);
+      const UserProfileComponent = () => (<UserProfile
+            userName={this.state.currentUser.userName}
+            memberSince={this.state.currentUser.memberSince}
+        />);
 
+      return (
+            <Router>
+                <Switch>
+                  <Route exact path="/" render={HomeComponent} />
+                  <Route exact path='/userProfile' render={UserProfileComponent} />
+                </Switch>
+            </Router>
+      );
+    }
 }
 
 export default App;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
-
-// export default App;
